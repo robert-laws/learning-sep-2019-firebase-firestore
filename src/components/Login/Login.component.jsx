@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'reactstrap';
 import { Card } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
+import { auth, getUserDocument } from '../../firebase/firebase-config';
 
 class Login extends Component {
   state = {
@@ -24,37 +24,37 @@ class Login extends Component {
     const { email, password } = this.state;
 
     try {
-      await auth.signInWithEmailAndPassword(email, password);
-      this.setState({ email: '', password: '' });
+      const { user } = await auth.signInWithEmailAndPassword(email, password);
+      getUserDocument(user.uid);
     } catch(error) {
       console.log('Error logging into account', error.message);
     }
+    
+    this.setState({ email: '', password: '' });
   }
   
   render() {
     const { email, password } = this.state;
 
     return (
-      <Row>
-        <Col>
-          <Card body>
-            <h4>
-              Login
-            </h4>
-            <Form onSubmit={this.handleSubmit}>
-              <FormGroup>
-                <Label for="email">Email</Label>
-                <Input type="email" name="email" id="email" placeholder="enter your email" value={email} onChange={this.handleChange} />
-              </FormGroup>
-              <FormGroup>
-                <Label for="password">Password</Label>
-                <Input type="password" name="password" id="password" placeholder="enter your password" value={password} onChange={this.handleChange} />
-              </FormGroup>
-              <Button color="primary">Login</Button>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
+      <>
+        <Card body>
+          <h4>
+            Login
+          </h4>
+          <Form onSubmit={this.handleSubmit}>
+            <FormGroup>
+              <Label for="email">Email</Label>
+              <Input type="email" name="email" id="email" placeholder="enter your email" value={email} onChange={this.handleChange} />
+            </FormGroup>
+            <FormGroup>
+              <Label for="password">Password</Label>
+              <Input type="password" name="password" id="password" placeholder="enter your password" value={password} onChange={this.handleChange} />
+            </FormGroup>
+            <Button color="primary">Login</Button>
+          </Form>
+        </Card>
+      </>
     )
   }
 }

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Col } from 'reactstrap';
 import { Card } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-import { auth } from '../../firebase/firebase-config';
+import { auth, createUserProfileDocument } from '../../firebase/firebase-config';
 
 class Signup extends Component {
   state = {
@@ -26,24 +25,25 @@ class Signup extends Component {
     const { displayName, email, password } = this.state;
 
     try {
-      const userRef = auth.createUserWithEmailAndPassword(email, password).then(user => {
-        console.log(user);
-      });
+      const { user } = await auth.createUserWithEmailAndPassword(email, password);
 
-      console.log(userRef);
-
-      console.log(displayName);
-      console.log(email);
+      createUserProfileDocument(user, { displayName });
     } catch(error) {
-      console.log(error);
+      console.log('Error signing up user', error.message);
     }
+
+    this.setState({
+      displayName: '',
+      email: '',
+      password: ''
+    })
   }
 
   render() {
     const { displayName, email, password } = this.state;
     
     return(
-      <Col sm="6">
+      <>
         <Card body>
           <h4>
             Sign Up
@@ -64,7 +64,7 @@ class Signup extends Component {
             <Button color="primary">Sign Up</Button>
           </Form>
         </Card>
-      </Col>
+      </>
     )
   }
 }
