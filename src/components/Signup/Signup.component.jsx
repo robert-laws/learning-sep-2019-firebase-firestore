@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'reactstrap';
+import { Col } from 'reactstrap';
 import { Card } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { auth, createUserProfileDocument } from 'firebase';
+
+import { auth } from '../../firebase/firebase-config';
 
 class Signup extends Component {
   state = {
@@ -25,16 +26,14 @@ class Signup extends Component {
     const { displayName, email, password } = this.state;
 
     try {
-      const { user } = await auth.createUserWithEmailAndPassword(email, password);
-
-      await createUserProfileDocument(user, { displayName });
-
-      this.setState({
-        displayName: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
+      const userRef = auth.createUserWithEmailAndPassword(email, password).then(user => {
+        console.log(user);
       });
+
+      console.log(userRef);
+
+      console.log(displayName);
+      console.log(email);
     } catch(error) {
       console.log(error);
     }
@@ -44,30 +43,28 @@ class Signup extends Component {
     const { displayName, email, password } = this.state;
     
     return(
-      <Row>
-        <Col>
-          <Card body>
-            <h4>
-              Sign Up
-            </h4>
-            <Form onSubmit={this.handleSubmit}>
-              <FormGroup>
-                <Label for="displayName">Display Name</Label>
-                <Input type="displayName" name="displayName" id="displayName" placeholder="enter your display name" value={displayName} onChange={this.handleChange} />
-              </FormGroup>
-              <FormGroup>
-                <Label for="email">Email</Label>
-                <Input type="email" name="email" id="email" placeholder="enter your email" value={email} onChange={this.handleChange} />
-              </FormGroup>
-              <FormGroup>
-                <Label for="password">Password</Label>
-                <Input type="password" name="password" id="password" placeholder="enter your password" value={password} onChange={this.handleChange} />
-              </FormGroup>
-              <Button color="primary">Sign Up</Button>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
+      <Col sm="6">
+        <Card body>
+          <h4>
+            Sign Up
+          </h4>
+          <Form onSubmit={this.handleSubmit}>
+            <FormGroup>
+              <Label for="displayName">Display Name</Label>
+              <Input type="displayName" name="displayName" id="displayName" placeholder="enter your display name" value={displayName} onChange={this.handleChange} />
+            </FormGroup>
+            <FormGroup>
+              <Label for="email">Email</Label>
+              <Input type="email" name="email" id="email" placeholder="enter your email" value={email} onChange={this.handleChange} />
+            </FormGroup>
+            <FormGroup>
+              <Label for="password">Password</Label>
+              <Input type="password" name="password" id="password" placeholder="enter your password" value={password} onChange={this.handleChange} />
+            </FormGroup>
+            <Button color="primary">Sign Up</Button>
+          </Form>
+        </Card>
+      </Col>
     )
   }
 }

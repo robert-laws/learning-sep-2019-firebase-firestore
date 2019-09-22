@@ -3,7 +3,6 @@ import { Row, Col } from 'reactstrap';
 import { Card, CardBody } from 'reactstrap';
 import { Button } from 'reactstrap';
 
-import { auth } from '../../firebase/firebase-config';
 
 const Logout = () => {
   return (

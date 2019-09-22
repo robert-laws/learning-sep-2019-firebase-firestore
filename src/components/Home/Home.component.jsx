@@ -1,10 +1,11 @@
 import React from 'react';
+import { Col } from 'reactstrap';
 
 const Home = () => {
   return (
-    <p>
+    <Col sm="6">
       Firebase using firestore code-along.
-    </p>
+    </Col>
   )
 }
 

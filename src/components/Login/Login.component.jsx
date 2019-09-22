@@ -3,7 +3,6 @@ import { Row, Col } from 'reactstrap';
 import { Card } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-import { auth } from '../../firebase/firebase-config';
 
 class Login extends Component {
   state = {
@@ -16,7 +15,7 @@ class Login extends Component {
 
     this.setState({
       [name]: value
-    })
+    });
   }
 
   handleSubmit = async event => {
