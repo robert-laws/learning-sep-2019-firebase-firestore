@@ -10,7 +10,13 @@ import { auth, createUserProfileDocument } from './firebase/firebase-config';
 import './App.scss';
 
 class App extends Component {
-  state = { currentUser: null }
+  constructor() {
+    super();
+
+    this.state = {
+      currentUser: null
+    }
+  }
 
   unsubscribeFromAuth = null;
 
