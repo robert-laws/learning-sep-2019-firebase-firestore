@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
+import Navigation from './components/Navigation/Navigation.component';
 import Home from './components/Home/Home.component';
+import Employees from './components/Employees/Employees.component';
 import SignupOrLogin from './components/SignupOrLogin/SignupOrLogin.component';
-import Logout from './components/Logout/Logout.component';
 
 import { auth, createUserProfileDocument } from './firebase/firebase-config';
 
@@ -35,13 +36,11 @@ class App extends Component {
     const { currentUser } = this.state;
     return (
       <Container>
-        <h1>Firebase Firestore</h1>
-        <Link to="/">Home</Link> | { currentUser ? '' : <Link to="/enter">Sign Up</Link>}
-        <p>{ currentUser ? `User ${currentUser.displayName} is Logged In` : 'No User Logged In' }</p>
-        { currentUser ? <Logout /> : ''}
+        <Navigation user={currentUser} />
         <hr />
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/employees" component={Employees} />
           { currentUser ? '' : <Route path='/enter' component={SignupOrLogin} />}
         </Switch>
       </Container>

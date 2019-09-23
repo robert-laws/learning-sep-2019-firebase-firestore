@@ -55,11 +55,11 @@ class Signup extends Component {
             </FormGroup>
             <FormGroup>
               <Label for="email">Email</Label>
-              <Input type="email" name="email" id="email" placeholder="enter your email" value={email} onChange={this.handleChange} />
+              <Input type="email" name="email" id="signupEmail" placeholder="enter your email" value={email} onChange={this.handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="password">Password</Label>
-              <Input type="password" name="password" id="password" placeholder="enter your password" value={password} onChange={this.handleChange} />
+              <Input type="password" name="password" id="signupPassword" placeholder="enter your password" value={password} onChange={this.handleChange} />
             </FormGroup>
             <Button color="primary">Sign Up</Button>
           </Form>
