@@ -35,15 +35,18 @@ class App extends Component {
   render() {
     const { currentUser } = this.state;
     return (
-      <Container>
-        <Navigation user={currentUser} />
-        <hr />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/employees" component={Employees} />
-          { currentUser ? '' : <Route path='/enter' component={SignupOrLogin} />}
-        </Switch>
-      </Container>
+      <>
+        <Container fluid className='nav-navigation'>
+          <Navigation user={currentUser} />
+        </Container>
+        <Container>          
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/employees" component={Employees} />
+            { currentUser ? '' : <Route path='/enter' component={SignupOrLogin} />}
+          </Switch>
+        </Container>
+      </>
     )
   }
 }

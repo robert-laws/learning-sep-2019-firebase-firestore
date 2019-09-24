@@ -7,3 +7,18 @@
   line-height: 1.4 !important;
   vertical-align: top !important;
 }
+
+.nav-alert {
+  margin-bottom: 0 !important;
+  padding: 0.5rem 1.25rem !important;
+}
+
+.nav-navigation {
+  margin-bottom: 30px;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+
+  .nav-item {
+    margin-left: 16px;
+  }
+}
