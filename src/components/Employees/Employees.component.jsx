@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import { Table } from 'reactstrap';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 import { firestore } from '../../firebase/firebase-config';
 
@@ -39,6 +41,8 @@ class Employees extends Component {
                 <th>Gender</th>
                 <th>Full Time</th>
                 <th>Experience</th>
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -51,6 +55,8 @@ class Employees extends Component {
                   <td>{employee.gender}</td>
                   <td>{employee.isFullTime.toString()}</td>
                   <td>{employee.yearsOfExperience}</td>
+                  <td className='text-center'><Link to='/'><FaEdit className='text-success' /></Link></td>
+                  <td className='text-center'><Link to='/'><FaTrash className='text-danger' /></Link></td>
                 </tr>
               ))}
             </tbody>
