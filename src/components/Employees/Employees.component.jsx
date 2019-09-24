@@ -28,7 +28,7 @@ class Employees extends Component {
     return (
       <Row>
         <Col sm="12">
-          <h4>Employees List</h4>
+          <h4 className='mb-4'>Employees List</h4>
         </Col>
         <Col sm="12">
           <Table hover size='md'>

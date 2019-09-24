@@ -26,6 +26,9 @@ const Navigation = ({ user }) => {
             <Link className='nav-link' to='/employees'>Employees</Link>
           </NavItem>
           <NavItem>
+            <Link className='nav-link' to='/add-employee'>Add New Employee</Link>
+          </NavItem>
+          <NavItem>
             {user ? logoutButton : <Link className='nav-link' to='/enter'>Sign Up or Login</Link>}
           </NavItem>
         </Nav>
