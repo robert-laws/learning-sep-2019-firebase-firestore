@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Card } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
@@ -31,6 +32,8 @@ class Login extends Component {
     }
     
     this.setState({ email: '', password: '' });
+
+    this.props.history.push('/')
   }
   
   render() {
@@ -59,4 +62,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);
