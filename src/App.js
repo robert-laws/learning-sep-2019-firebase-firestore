@@ -6,6 +6,7 @@ import Navigation from './components/Navigation/Navigation.component';
 import Home from './components/Home/Home.component';
 import Employees from './components/Employees/Employees.component';
 import AddEmployee from './components/AddEmployee/AddEmployee.component';
+import EditEmployee from './components/EditEmployee/EditEmployee.component';
 import SignupOrLogin from './components/SignupOrLogin/SignupOrLogin.component';
 
 import { auth, createUserProfileDocument } from './firebase/firebase-config';
@@ -45,6 +46,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/employees" component={Employees} />
             <Route exact path="/add-employee" component={AddEmployee} />
+            <Route exact path="/edit/:docName" component={EditEmployee} />
             { currentUser ? '' : <Route path='/enter' component={SignupOrLogin} />}
           </Switch>
         </Container>

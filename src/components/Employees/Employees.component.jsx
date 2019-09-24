@@ -24,6 +24,10 @@ class Employees extends Component {
     })
   }
 
+  getDocName(firstName, lastName) {
+    return `/edit/${firstName.charAt(0)}.${lastName}`;
+  }
+
   render() {
     return (
       <Row>
@@ -55,7 +59,7 @@ class Employees extends Component {
                   <td>{employee.gender}</td>
                   <td>{employee.isFullTime.toString()}</td>
                   <td>{employee.yearsOfExperience}</td>
-                  <td className='text-center'><Link to='/'><FaEdit className='text-success' /></Link></td>
+                  <td className='text-center'><Link to={this.getDocName(employee.fName, employee.lName)}><FaEdit className='text-success' /></Link></td>
                   <td className='text-center'><Link to='/'><FaTrash className='text-danger' /></Link></td>
                 </tr>
               ))}
