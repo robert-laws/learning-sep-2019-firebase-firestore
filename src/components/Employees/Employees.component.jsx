@@ -2,30 +2,48 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import { Table } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 import { firestore } from '../../firebase/firebase-config';
 
 class Employees extends Component {
   state = { employeesList: [] }
+  unsubscribeFromEmployees = null;
+
+  get employeesRef() {
+    return firestore.collection('employees');
+  }
 
   componentDidMount = async () => {
-    const employeesRef = firestore.collection('employees');
-
-    const snapshot = await employeesRef.get();
-
-    snapshot.forEach(doc => {
-      const id = doc.id;
-      const { age, email, fName, lName, gender, isFullTime, yearsOfExperience } = doc.data();
+    this.unsubscribeFromEmployees = this.employeesRef.onSnapshot(snapshot => {
+      const employees = snapshot.docs.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data()
+        }
+      })
 
       this.setState({
-        employeesList: [...this.state.employeesList, { id, age, email, fName, lName, gender, isFullTime, yearsOfExperience }]
+        employeesList: employees
       })
     })
   }
 
-  getDocName(firstName, lastName) {
-    return `/edit/${firstName.charAt(0)}.${lastName}`;
+  componentWillUnmount() {
+    this.unsubscribeFromEmployees();
+  }
+
+  getDocName(employeeId) {
+    return `/edit/${employeeId}`;
+  }
+
+  handleClick = async (docName) => {
+    try {
+      await this.employeesRef.doc(docName).delete();
+    } catch(error) {
+      console.log('Error deleting employee', error.message)
+    }
   }
 
   render() {
@@ -59,8 +77,8 @@ class Employees extends Component {
                   <td>{employee.gender}</td>
                   <td>{employee.isFullTime.toString()}</td>
                   <td>{employee.yearsOfExperience}</td>
-                  <td className='text-center'><Link to={this.getDocName(employee.fName, employee.lName)}><FaEdit className='text-success' /></Link></td>
-                  <td className='text-center'><Link to='/'><FaTrash className='text-danger' /></Link></td>
+                  <td className='text-center'><Link to={this.getDocName(employee.id)}><FaEdit className='text-success' /></Link></td>
+                  <td className='text-center'><Button color="link" className="btn-delete" onClick={(event) => {this.handleClick(employee.id)}}><FaTrash className='text-danger' /></Button></td>
                 </tr>
               ))}
             </tbody>
