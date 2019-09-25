@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Card, CardBody, CardTitle } from 'reactstrap';
 import { Table } from 'reactstrap';
-import { Button } from 'reactstrap';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 import { firestore } from '../../firebase/firebase-config';
 
 class Employees extends Component {
-  state = { employeesList: [] }
+  state = { 
+    employeesList: [],
+    gender: '0',
+    age: 0
+  }
+
   unsubscribeFromEmployees = null;
 
   get employeesRef() {
@@ -38,6 +44,14 @@ class Employees extends Component {
     return `/edit/${employeeId}`;
   }
 
+  handleChange = event => {
+    const { name, value } = event.target;
+
+    this.setState({
+      [name]: value
+    })
+  }
+
   handleClick = async (docName) => {
     try {
       await this.employeesRef.doc(docName).delete();
@@ -46,11 +60,79 @@ class Employees extends Component {
     }
   }
 
+  handleSubmit = event => {
+    event.preventDefault();
+
+    this.employeesRef.where('gender', '==', this.state.gender).where('age', '>', Number(this.state.age)).onSnapshot(snapshot => {
+      const employees = snapshot.docs.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data()
+        }
+      })
+
+      this.setState({
+        employeesList: employees
+      })
+    })
+  }
+
+  handleCancelClick = event => {
+    event.preventDefault();
+
+    this.employeesRef.onSnapshot(snapshot => {
+      const employees = snapshot.docs.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data()
+        }
+      })
+
+      this.setState({
+        employeesList: employees,
+        gender: '0',
+        age: 10
+      })
+    })
+  }
+
   render() {
+    const { gender, age } = this.state;
+
     return (
       <Row>
         <Col sm="12">
           <h4 className='mb-4'>Employees List</h4>
+        </Col>
+        <Col sm="12">
+          <Card>              
+            <CardBody>
+              <CardTitle className='text-bold'>Filters</CardTitle>
+              <Form onSubmit={this.handleSubmit} inline>
+                <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                  <Label for="gender" className="mr-sm-2">Gender</Label>
+                  <Input type="select" id="gender" name="gender" value={gender} onChange={this.handleChange}>
+                    <option value="0">Select a Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </Input>
+                </FormGroup>          
+                <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                  <Label for="age" className="mr-sm-2">and Age is Greater Than</Label>
+                  <Input type="select" id="age" name="age" value={age} onChange={this.handleChange}>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="40">40</option>
+                    <option value="50">50</option>
+                    <option value="60">60</option>
+                  </Input>
+                </FormGroup>          
+                <Button color="primary" className="mb-2 mr-sm-2 mb-sm-0">Apply Filter</Button>
+                <Button color="secondary" onClick={this.handleCancelClick}>Clear Filter</Button>
+              </Form>
+            </CardBody>
+          </Card>
         </Col>
         <Col sm="12">
           <Table hover size='md'>

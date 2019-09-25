@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Card } from 'reactstrap';
+import { Alert } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 import { auth, getUserDocument } from '../../firebase/firebase-config';
@@ -8,7 +9,8 @@ import { auth, getUserDocument } from '../../firebase/firebase-config';
 class Login extends Component {
   state = {
     email: '',
-    password: ''
+    password: '',
+    errorMessage: ''
   }
 
   handleChange = event => {
@@ -27,13 +29,12 @@ class Login extends Component {
     try {
       const { user } = await auth.signInWithEmailAndPassword(email, password);
       getUserDocument(user.uid);
+      this.setState({ email: '', password: '' });
+      this.props.history.push('/')
     } catch(error) {
       console.log('Error logging into account', error.message);
-    }
-    
-    this.setState({ email: '', password: '' });
-
-    this.props.history.push('/')
+      this.setState({ errorMessage: error.message })
+    }    
   }
   
   render() {
@@ -45,6 +46,9 @@ class Login extends Component {
           <h4>
             Login
           </h4>
+
+          {this.state.errorMessage !== '' ? <Alert color='danger'>{this.state.errorMessage}</Alert> : ''}
+
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
               <Label for="email">Email</Label>

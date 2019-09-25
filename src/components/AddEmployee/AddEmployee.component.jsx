@@ -38,6 +38,8 @@ class AddEmployee extends Component {
     event.preventDefault();
 
     const { fName, lName, email, age, gender, yearsOfExperience, isFullTime } = this.state;
+    const employeeAge = Number(age);
+    const employeeYearsOfExperience = Number(yearsOfExperience);
 
     let docName = `${fName.charAt(0)}.${lName}`;
     
@@ -48,9 +50,9 @@ class AddEmployee extends Component {
         fName,
         lName,
         email,
-        age,
+        age: employeeAge,
         gender,
-        yearsOfExperience,
+        yearsOfExperience: employeeYearsOfExperience,
         isFullTime
       });
     } catch(error) {
@@ -90,7 +92,7 @@ class AddEmployee extends Component {
                   </FormGroup>
                   <FormGroup>
                     <Label for="age">Age</Label>
-                    <Input type="text" id="age" name="age" value={age} onChange={this.handleChange} placeholder="Age" />
+                    <Input type="number" id="age" name="age" value={age} onChange={this.handleChange} placeholder="Age" />
                   </FormGroup>
                   <FormGroup>
                     <Label for="gender">Gender</Label>
@@ -102,7 +104,7 @@ class AddEmployee extends Component {
                   </FormGroup>
                   <FormGroup>
                     <Label for="yearsOfExperience">Years Of Experience</Label>
-                    <Input type="text" id="yearsOfExperience" name="yearsOfExperience" value={yearsOfExperience} onChange={this.handleChange} placeholder="Years of Experience" />
+                    <Input type="number" id="yearsOfExperience" name="yearsOfExperience" value={yearsOfExperience} onChange={this.handleChange} placeholder="Years of Experience" />
                   </FormGroup>
                   <FormGroup check className="mb-3">
                     <Label check>
