@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'reactstrap';
+import { Alert } from 'reactstrap';
 import { Card, CardBody, CardTitle } from 'reactstrap';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 
@@ -15,7 +16,8 @@ class AddEmployee extends Component {
     age: '',
     gender: '0',
     yearsOfExperience: '',
-    isFullTime: false
+    isFullTime: false,
+    error: ''
   }
 
   handleChange = event => {
@@ -55,15 +57,17 @@ class AddEmployee extends Component {
         yearsOfExperience: employeeYearsOfExperience,
         isFullTime
       });
-    } catch(error) {
-      console.log('Error creating employee', error.message)
-    }
 
-    this.props.history.push('/employees')
+      this.props.history.push('/employees')
+    } catch(error) {
+      this.setState({
+        error: error.message
+      })
+    }    
   }
 
   render() {
-    const { fName, lName, email, age, gender, yearsOfExperience, isFullTime } = this.state;
+    const { fName, lName, email, age, gender, yearsOfExperience, isFullTime, error } = this.state;
 
     return (
       <>
@@ -76,6 +80,7 @@ class AddEmployee extends Component {
           <Col sm="12">
             <Card>              
               <CardBody>
+                {error !== '' ? <Alert color='danger'>{error}</Alert> : ''}
                 <CardTitle className='text-bold'>New Employee Details</CardTitle>
                 <Form onSubmit={this.handleSubmit}>
                   <FormGroup>

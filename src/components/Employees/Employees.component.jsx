@@ -12,7 +12,8 @@ class Employees extends Component {
   state = { 
     employeesList: [],
     gender: '0',
-    age: 0
+    age: 0,
+    employeeSearch: ''
   }
 
   unsubscribeFromEmployees = null;
@@ -22,7 +23,7 @@ class Employees extends Component {
   }
 
   componentDidMount = async () => {
-    this.unsubscribeFromEmployees = this.employeesRef.onSnapshot(snapshot => {
+    this.unsubscribeFromEmployees = this.employeesRef.orderBy('fName', 'asc').limit(15).onSnapshot(snapshot => {
       const employees = snapshot.docs.map(doc => {
         return {
           id: doc.id,
@@ -80,7 +81,7 @@ class Employees extends Component {
   handleCancelClick = event => {
     event.preventDefault();
 
-    this.employeesRef.onSnapshot(snapshot => {
+    this.employeesRef.limit(5).onSnapshot(snapshot => {
       const employees = snapshot.docs.map(doc => {
         return {
           id: doc.id,
@@ -97,14 +98,14 @@ class Employees extends Component {
   }
 
   render() {
-    const { gender, age } = this.state;
+    const { gender, age, employeeSearch } = this.state;
 
     return (
       <Row>
         <Col sm="12">
           <h4 className='mb-4'>Employees List</h4>
         </Col>
-        <Col sm="12">
+        <Col sm="12" className='mb-3'>
           <Card>              
             <CardBody>
               <CardTitle className='text-bold'>Filters</CardTitle>
@@ -134,7 +135,15 @@ class Employees extends Component {
             </CardBody>
           </Card>
         </Col>
-        <Col sm="12">
+        <Col sm="12" className='mb-3'>
+          <Card>              
+            <CardBody>
+              <CardTitle className='text-bold'>Search</CardTitle>
+              <Input type='text' id='employeeSearch' name='employeeSearch' placeholder='Search for an Employee by First Name' value={employeeSearch} onChange={this.handleChange} />
+            </CardBody>
+          </Card>
+        </Col>
+        <Col sm="12" className='mb-3'>
           <Table hover size='md'>
             <thead>
               <tr>
