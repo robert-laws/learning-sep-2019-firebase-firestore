@@ -23,6 +23,9 @@ const Navigation = ({ user }) => {
             <Alert color='info' className="text-info nav-alert">{ user ? `User ${user.displayName} is Logged In` : 'No User Currently Logged In' }</Alert>
           </NavItem>
           <NavItem>
+            <Link className='nav-link' to='/technologies'>Technologies</Link>
+          </NavItem>
+          <NavItem>
             <Link className='nav-link' to='/employees'>Employees</Link>
           </NavItem>
           <NavItem>
